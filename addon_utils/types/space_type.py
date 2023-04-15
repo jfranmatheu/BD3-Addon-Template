@@ -1,0 +1,6 @@
+
+
+class SpaceType:
+    VIEW_3D = 'VIEW_3D'
+    NODE_EDITOR = 'NODE_EDITOR'
+    IMAGE_EDITOR = 'IMAGE_EDITOR'

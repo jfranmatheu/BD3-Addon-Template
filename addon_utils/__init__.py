@@ -1,3 +1,4 @@
-from ._auto_load import AutoLoad
+from bpy import types as bpy_t # Blender Types.
+from .btypes import BTypes, Property # Addon Types.
 
-from .types import BTypes
+from ._auto_load import AutoLoad

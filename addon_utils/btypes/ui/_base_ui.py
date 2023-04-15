@@ -1,5 +1,7 @@
 from bpy.types import UILayout, Context
 
+from .._base import BTypeBase
+
 
 class DrawExtension:
     def section(self,
@@ -22,9 +24,10 @@ class DrawExtension:
         return row
 
 
-class BaseUI:
+class BaseUI(BTypeBase):
     layout: UILayout
     bl_idname: str
+    bl_label: str
 
     @property
     def layout(self) -> UILayout:
@@ -37,10 +40,6 @@ class BaseUI:
         pass
 
     ###################################
-
-    @classmethod
-    def register(cls):
-        pass
 
     @classmethod
     def draw_in_layout(cls, layout: UILayout) -> None:

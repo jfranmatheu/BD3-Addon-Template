@@ -7,9 +7,7 @@ import sys
 
 import bpy
 
-
-from .. import __package__ as __main_package__
-blender_version = bpy.app.version
+from .globals import GLOBALS
 
 modules = None
 registered = False
@@ -25,12 +23,21 @@ class AutoLoad:
             AutoLoad._unregister()
     '''
 
-    def initialize(cls):
-        main_module = importlib.import_module(__main_package__)
-        main_module.register = cls._register_modules
-        main_module.unregister = cls._unregister_modules
+    @classmethod
+    def initialize(cls, works_in_background: bool = False):
+        main_module = importlib.import_module(GLOBALS.ADDON_MODULE)
 
-        cls._init_modules()
+        if not works_in_background and bpy.app.background:
+            main_module.register = lambda: None
+            main_module.unregister = lambda: None
+
+        else:
+            main_module.register = cls._register_modules
+            main_module.unregister = cls._unregister_modules
+
+            cls._init_modules()
+            
+        importlib.reload(main_module)
 
     @classmethod
     def _init_modules(cls):
@@ -151,7 +158,7 @@ def iter_my_deps_from_annotations(cls, my_classes):
                 yield dependency
 
 def get_dependency_from_annotation(value):
-    if blender_version >= (2, 93):
+    if GLOBALS.BLENDER_VERSION >= (2, 93):
         if isinstance(value, bpy.props._PropertyDeferred):
             return value.keywords.get("type")
     else:

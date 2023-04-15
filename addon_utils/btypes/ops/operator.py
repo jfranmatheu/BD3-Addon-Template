@@ -1,9 +1,10 @@
 import bpy
-from bpy.types import Operator, OperatorProperties, UILayout, Context, Event
+from bpy import types as bpy_types
 
 import re
 
-from ..._auto_load import __main_package__
+from .._base import BTypeBase
+from ...globals import GLOBALS
 
 
 class OpsReturn:
@@ -14,7 +15,7 @@ class OpsReturn:
     UI = {'INTERFACE'}
 
 
-class Operator:
+class Operator(BTypeBase):
     ''' Base Class for Operator types.
         Class Properties:
             - 'label': aka bl_label.
@@ -28,41 +29,41 @@ class Operator:
             - 'action': a fast way to perform any action you need, does not requires to return OpsReturn manually.
     '''
     bl_idname: str
+    bl_label: str
 
     label: str
 
     @classmethod
-    def poll(cls, context: Context) -> bool:
+    def poll(cls, context: bpy_types.Context) -> bool:
         return True
 
-    def invoke(self, context: Context, event: Event) -> OpsReturn:
+    def invoke(self, context: bpy_types.Context, event: bpy_types.Event) -> OpsReturn:
         # print("BaseOperator::invoke() -> ", self.bl_idname)
         return self.execute(context)
 
-    def action(self, context: 'Context') -> None:
+    def action(self, context: bpy_types.Context) -> None:
         # print("BaseOperator::action() -> ", self.bl_idname)
         pass
 
-    def execute(self, context: 'Context') -> OpsReturn:
+    def execute(self, context: bpy_types.Context) -> OpsReturn:
         # print("BaseOperator::execute() -> ", self.bl_idname)
         self.action(context)
         return OpsReturn.FINISH
 
 
     ###################################
-    
+
     @classmethod
-    def register(cls):
-        keywords = re.findall('[A-Z][^A-Z]*', cls.__name__)
+    def tag_register(deco_cls, **kwargs: dict) -> 'Operator':
+        keywords = re.findall('[A-Z][^A-Z]*', deco_cls.__name__)
         idname: str = '_'.join([word.lower() for word in keywords])
 
-        return type(
-            __main_package__.upper() + '_OT_' + idname,
-            (cls, Operator),
-            {
-                'bl_label': cls.label if hasattr(cls, 'label') else ' '.join(keywords),
-                'bl_idname': __main_package__.lower() + '.' + idname,
-            }
+        return super().tag_register(
+            bpy_types.Operator,
+            cls_name=GLOBALS.ADDON_MODULE.upper() + '_OT_' + idname,
+            bl_label=deco_cls.label if hasattr(deco_cls, 'label') else ' '.join(keywords),
+            bl_idname=GLOBALS.ADDON_MODULE.lower() + '.' + idname,
+            **kwargs
         )
 
     @classmethod
@@ -75,10 +76,10 @@ class Operator:
 
     @classmethod
     def draw_in_layout(cls,
-                       layout: UILayout,
+                       layout: bpy_types.UILayout,
                        label: str = None,
                        op_props: dict = {},
-                       **draw_kwargs: dict) -> OperatorProperties:
+                       **draw_kwargs: dict) -> bpy_types.OperatorProperties:
         op = layout.operator(cls.bl_idname, text=label if label is not None else cls.label, **draw_kwargs)
         if op_props:
             for key, value in op_props.items():
