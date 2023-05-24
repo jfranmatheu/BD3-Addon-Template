@@ -6,6 +6,8 @@ from collections import defaultdict
 from dataclasses import dataclass
 import inspect
 
+from .._globals import GLOBALS
+
 
 def get_inner_classes(cls):
     return [cls_attribute for cls_attribute in cls.__dict__.values()
@@ -40,16 +42,16 @@ class BlenderTypes(Enum):
         classes_per_type[self] = filter(self.get_classes())
 
     def add_class(self, cls) -> None:
-        print(f"[UVFLOW] New {self.name} class : {cls.__name__}")
+        print(f"[{GLOBALS.ADDON_MODULE}] New {self.name} class : {cls.__name__}")
         classes_per_type[self].append(cls)
 
     def register_classes(self) -> None:
         if reg_factory := register_factory.get(self, None):
-            print(f"[UVFLOW] Register {self.name} classes")
+            print(f"[{GLOBALS.ADDON_MODULE}] + Register {self.name} classes")
             reg_factory.register()
         else:
             for cls in classes_per_type[self]:
-                print(f"[UVFLOW] Register {self.name} class: {cls.__name__}")
+                print(f"[{GLOBALS.ADDON_MODULE}] + Register {self.name} class: {cls.__name__}")
                 register_class(cls)
 
     def unregister_classes(self) -> None:
@@ -58,7 +60,7 @@ class BlenderTypes(Enum):
         else:
             for cls in classes_per_type[self]:
                 if "bl_rna" in cls.__dict__:
-                    print(f"[UVFLOW] UNRegister {self.name} class: {cls.__name__}")
+                    print(f"[{GLOBALS.ADDON_MODULE}] - UnRegister {self.name} class: {cls.__name__}")
                     unregister_class(cls)
 
     def create_classes_factory(self):
@@ -70,12 +72,12 @@ register_factory: Dict[BlenderTypes, RegisterFactory] = {}
 
 
 def late_init():
-    # Ensure that property group classes are correctly sorted to avoid issues with dependencies.
+    # Ensure that property group classes are correctly sorted to avoid dependency issues.
     from .._auto_load import get_ordered_pg_classes_to_register
     BlenderTypes.PropertyGroup.sort_classes(get_ordered_pg_classes_to_register)
 
-    #for btype in BlenderTypes:
-    #    btype.create_classes_factory()
+    # for btype in BlenderTypes:
+    #     btype.create_classes_factory()
 
 
 def register():

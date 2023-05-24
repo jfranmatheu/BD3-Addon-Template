@@ -1,4 +1,4 @@
-from ..addon_utils import BTypes, bpy_t
+from ..ackit import BTypes, bpy_t
 
 
 class TestPreferences(BTypes.PREFS):

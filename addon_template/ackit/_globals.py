@@ -1,8 +1,7 @@
 import bpy
 import sys
 
-from .. import __package__ as __main_package__
-from .. import bl_info
+from .. import __package__ as __main_package__, bl_info
 
 
 class GLOBALS:

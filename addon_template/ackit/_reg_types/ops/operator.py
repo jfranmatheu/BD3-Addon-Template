@@ -4,7 +4,7 @@ from bpy import types as bpy_types
 import re
 
 from .._base import BTypeBase
-from ...globals import GLOBALS
+from ..._globals import GLOBALS
 
 
 class OpsReturn:

@@ -1,5 +1,5 @@
 from ._base_ui import BaseUI, UILayout
-from ...globals import GLOBALS
+from ..._globals import GLOBALS
 
 from bpy.types import Menu as BlMenu
 

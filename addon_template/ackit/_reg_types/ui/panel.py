@@ -1,5 +1,5 @@
 from ._base_ui import BaseUI, DrawExtension, UILayout, Context
-from ...globals import GLOBALS
+from ..._globals import GLOBALS
 
 from bpy.types import Panel as BlPanel
 
@@ -13,6 +13,7 @@ class PanelFlags:
 class Panel(BaseUI, DrawExtension):
     label: str
     tab: str = GLOBALS.ADDON_MODULE
+    context: str = ''
     space_type: str = 'VIEW_3D'
     region_type: str = 'UI'
     panel_flags: set[PanelFlags] = set()
@@ -27,6 +28,7 @@ class Panel(BaseUI, DrawExtension):
             BlPanel,
             bl_idname=GLOBALS.ADDON_MODULE + '_PT_' + deco_cls.__name__.lower(),
             bl_label=deco_cls.label if hasattr(deco_cls, 'label') else deco_cls.__name__,
+            bl_context=deco_cls.context,
             bl_category=deco_cls.tab,
             bl_space_type=deco_cls.space_type,
             bl_region_type=deco_cls.region_type,

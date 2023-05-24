@@ -7,7 +7,7 @@ import sys
 
 import bpy
 
-from .globals import GLOBALS
+from ._globals import GLOBALS
 
 modules = None
 registered = False
@@ -16,6 +16,7 @@ registered = False
 class AutoLoad:
     ''' Add this to your main __init__.py
         Usage:
+            AutoLoad.set_info()
             AutoLoad.initialize()
         Usage if using own register and unregister in main __init__.py
         Include these in your register() and unregister():
@@ -36,8 +37,10 @@ class AutoLoad:
             main_module.unregister = cls._unregister_modules
 
             cls._init_modules()
-            
+
         importlib.reload(main_module)
+
+    magic = initialize
 
     @classmethod
     def _init_modules(cls):
@@ -94,8 +97,12 @@ class AutoLoad:
         for module in modules:
             if hasattr(module, "unregister"):
                 module.unregister()
+        for module in modules:
+            if hasattr(module, "late_unregister"):
+                module.late_unregister()
         registered = False
 
+LoadAddon = AutoLoad.magic
 
 ###############################################
 # ADDON MODULES INITIALIZATION UTIL FUNCTIONS #
