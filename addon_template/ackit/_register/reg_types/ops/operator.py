@@ -4,15 +4,8 @@ from bpy import types as bpy_types
 import re
 
 from .._base import BTypeBase
-from ..._globals import GLOBALS
-
-
-class OpsReturn:
-    FINISH = {'FINISHED'}
-    CANCEL = {'CANCELLED'}
-    PASS = {'PASS_THROUGH'}
-    RUN = {'RUNNING_MODAL'}
-    UI = {'INTERFACE'}
+from ...._globals import GLOBALS
+from ....types.operator import OpsReturn
 
 
 class Operator(BTypeBase):

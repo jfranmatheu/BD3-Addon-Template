@@ -3,8 +3,10 @@ from bpy import types as bpy_types
 
 from enum import Enum
 
-from .reg_common import BlenderTypes
-from .reg_property import PropertyRegister, Property
+from .._register import BlenderTypes
+from .reg_property import PropertyRegister
+
+from ...types import PropertyTypes
 
 
 class PGRootTypes(Enum):
@@ -37,7 +39,7 @@ class PGRootTypes(Enum):
     def __call__(self, prop_name: str = None) -> PropertyGroup:
         def decorator(decorated_cls):
             pg_cls = _register_property_group(decorated_cls)
-            PropertyRegister(self.value, prop_name if prop_name else 'uvflow', Property.POINTER(pg_cls))
+            PropertyRegister(self.value, prop_name if prop_name else 'uvflow', PropertyTypes.POINTER(pg_cls))
             return pg_cls
         return decorator
 
@@ -51,7 +53,7 @@ def _register_property_group(deco_cls) -> PropertyGroup:
             'bl_label': deco_cls.bl_label if 'bl_label' in deco_cls else deco_cls.__name__,
         }
     )
-    BlenderTypes.PROPERTY_GROUP.add_class(pg_cls)
+    BlenderTypes.PropertyGroup.add_class(pg_cls)
     return pg_cls
 
 

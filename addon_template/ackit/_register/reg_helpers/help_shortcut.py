@@ -4,7 +4,7 @@ from bpy.types import Operator, KeyMap, KeyMapItems, KeyMapItem
 from typing import List
 from dataclasses import dataclass
 
-from ..types.event import EventType, EventValue
+from ...types.event import EventType, EventValue
 
 
 @dataclass

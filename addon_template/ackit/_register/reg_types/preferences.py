@@ -1,7 +1,7 @@
 from bpy.types import AddonPreferences as BlAddonPreferences
 
 from .ui._base_ui import BaseUI, DrawExtension
-from .._globals import GLOBALS
+from ..._globals import GLOBALS
 
 
 class AddonPreferences(BaseUI, DrawExtension):

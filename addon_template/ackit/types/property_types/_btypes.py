@@ -1,8 +1,7 @@
-from .. import btypes
-from enum import Enum
+from bpy import types as btypes
 
 
-class PropertyBpyTypes(Enum):
+class PropertyBpyTypes:
     OBJECT = btypes.Object
     MESH = btypes.Mesh
     CAMERA = btypes.Camera
@@ -14,7 +13,3 @@ class PropertyBpyTypes(Enum):
     IMAGE = btypes.Image
     TEXTURE = btypes.Texture
     CUSTOM = None
-
-
-def get_property_bpy_types():
-    return compile('\t\n'.join([f'{btype.name} = {btype.value}' for btype in PropertyBpyTypes]))

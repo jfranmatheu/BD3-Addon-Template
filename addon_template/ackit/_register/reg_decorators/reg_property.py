@@ -2,7 +2,7 @@ from typing import Type, Dict, List
 from dataclasses import dataclass
 from collections import defaultdict
 
-from .._reg_types import Property
+from ...types import PropertyTypes
 
 
 @dataclass
@@ -14,7 +14,7 @@ class PropertyWrapper:
 to_register_properties: Dict[Type, List[PropertyWrapper]] = defaultdict(list)
 
 
-def PropertyRegister(data, prop_name, property: Property) -> None:
+def PropertyRegister(data, prop_name, property: PropertyTypes) -> None:
     to_register_properties[data].append(PropertyWrapper(prop_name, property))
 
 def BatchPropertyRegister(data, **props: dict) -> None:

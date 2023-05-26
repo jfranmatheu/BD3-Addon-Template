@@ -1,6 +1,6 @@
 from bpy.props import *
 from .. import btypes
-from .property_btypes import PropertyBpyTypes
+from ._btypes import PropertyBpyTypes
 
 from enum import Enum
 

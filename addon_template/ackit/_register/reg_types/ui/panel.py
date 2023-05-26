@@ -1,13 +1,20 @@
+from enum import Enum, auto
+
 from ._base_ui import BaseUI, DrawExtension, UILayout, Context
-from ..._globals import GLOBALS
+from ...._globals import GLOBALS
 
 from bpy.types import Panel as BlPanel
 
 
-class PanelFlags:
-    HIDE_HEADER = 'HIDE_HEADER'
-    DEFAULT_CLOSED = 'DEFAULT_CLOSED'
-    INSTANCED = 'INSTANCED'
+class PanelFlags(Enum):
+    ''' Use as decorator over a Panel subclass. '''
+    HIDE_HEADER = auto()
+    DEFAULT_CLOSED = auto()
+    INSTANCED = auto()
+
+    def __call__(self, deco_cls: 'Panel'):
+        deco_cls.panel_flags.add(self)
+        return deco_cls
 
 
 class Panel(BaseUI, DrawExtension):
@@ -17,6 +24,9 @@ class Panel(BaseUI, DrawExtension):
     space_type: str = 'VIEW_3D'
     region_type: str = 'UI'
     panel_flags: set[PanelFlags] = set()
+
+    def draw_header(self, context: Context):
+        super().draw_header(context)
 
     @classmethod
     def draw_in_layout(cls, layout: UILayout, label: str = 'Panel'):
@@ -32,7 +42,7 @@ class Panel(BaseUI, DrawExtension):
             bl_category=deco_cls.tab,
             bl_space_type=deco_cls.space_type,
             bl_region_type=deco_cls.region_type,
-            bl_options=deco_cls.panel_flags
+            bl_options={flag.name for flag in deco_cls.panel_flags}
         )
 
     '''

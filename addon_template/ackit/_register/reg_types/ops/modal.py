@@ -2,11 +2,12 @@ from enum import Enum, auto
 
 from bpy import types as bpy_types
 
-from ...types.event import EventType, EventValue, Mouse
+from ....types.event import EventType, EventValue, Mouse
 from .operator import Operator, OpsReturn
 
 
-class OpsModalFlags(Enum):
+class ModalFlags(Enum):
+    ''' Use as decorator over an Operator subclass. '''
     class Raycast(Enum):
         BVHTREE = auto()
         SCENE = auto()
@@ -15,10 +16,14 @@ class OpsModalFlags(Enum):
     DRAW_2D = auto()
     DRAW_3D = auto()
 
+    def __call__(self, deco_cls: 'ModalOperator'):
+        deco_cls.modal_flags.add(self)
+        return deco_cls
+
 
 class ModalOperator(Operator):
     # Properties you should set in your subclasses.
-    modal_flags: set[OpsModalFlags]
+    modal_flags: set[ModalFlags]
 
     # --------------------------------
 
@@ -50,5 +55,5 @@ class ModalOperator(Operator):
     #############################
 
     @classmethod
-    def tag_register(deco_cls, flags: set[OpsModalFlags] = set()) -> 'ModalOperator':
+    def tag_register(deco_cls, flags: set[ModalFlags] = set()) -> 'ModalOperator':
         return super().tag_register()

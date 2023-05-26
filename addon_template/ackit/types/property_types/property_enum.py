@@ -1,8 +1,9 @@
 from bpy.props import *
-from .. import btypes
 
 from typing import Tuple, List, Set, Callable
 from dataclasses import dataclass, field, asdict
+
+from ._btypes import btypes
 
 
 @dataclass

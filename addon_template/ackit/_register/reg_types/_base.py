@@ -1,7 +1,7 @@
 import bpy
 
-from ._register import BlenderTypes
-from .._globals import GLOBALS
+from .._register import BlenderTypes
+from ..._globals import GLOBALS
 
 from collections import defaultdict
 
