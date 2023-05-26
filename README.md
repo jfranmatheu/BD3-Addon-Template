@@ -14,4 +14,4 @@ gitGraph
 ```
 
 ## ackit submodule
-![ARKit-Submodule-BlenderAddonDevelopment](https://github.com/jfranmatheu/BD3-Addon-Help-Modules/assets/45881831/b9eb26d7-ed7d-40a6-8c82-85269e01ab8a)
+![image](https://github.com/jfranmatheu/BD3-Addon-Help-Modules/assets/45881831/88da9753-48ad-4810-9716-da1635dafdd2)
