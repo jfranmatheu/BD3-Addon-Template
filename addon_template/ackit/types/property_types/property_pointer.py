@@ -1,11 +1,24 @@
 from bpy.props import *
-from .. import btypes
+from bpy import types as btypes
+
 from ._btypes import PropertyBpyTypes
 
 from enum import Enum
 
 
-class PointerPropertyTypes(Enum, PropertyBpyTypes):
+class PointerPropertyTypes(Enum):
+    OBJECT = btypes.Object
+    MESH = btypes.Mesh
+    CAMERA = btypes.Camera
+    LIGHT = btypes.Light
+    ARMATURE = btypes.Armature
+    NODE_TREE = btypes.NodeTree
+    NODE_GROUP = btypes.NodeGroup
+    BRUSH = btypes.Brush
+    IMAGE = btypes.Image
+    TEXTURE = btypes.Texture
+    CUSTOM = None
+
     def __call__(self, name: str, **kwargs: dict) -> btypes.PointerProperty:
         if self.value is None:
             if 'type' not in kwargs:

@@ -8,6 +8,9 @@ from ...._globals import GLOBALS
 from ....types.operator import OpsReturn
 
 
+op_idname_cache = {}
+
+
 class Operator(BTypeBase):
     ''' Base Class for Operator types.
         Class Properties:
@@ -48,14 +51,8 @@ class Operator(BTypeBase):
 
     @classmethod
     def tag_register(deco_cls, **kwargs: dict) -> 'Operator':
-        keywords = re.findall('[A-Z][^A-Z]*', deco_cls.__name__)
-        idname: str = '_'.join([word.lower() for word in keywords])
-
         return super().tag_register(
-            bpy_types.Operator,
-            cls_name=GLOBALS.ADDON_MODULE.upper() + '_OT_' + idname,
-            bl_label=deco_cls.label if hasattr(deco_cls, 'label') else ' '.join(keywords),
-            bl_idname=GLOBALS.ADDON_MODULE.lower() + '.' + idname,
+            bpy_types.Operator, 'OT',
             **kwargs
         )
 

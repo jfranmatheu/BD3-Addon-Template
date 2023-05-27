@@ -13,3 +13,10 @@ class Reg:
     class Flag:
         Modal = ModalFlags # Decorator.
         Panel = PanelFlags # Decorator.
+
+
+def clear_register_cache():
+    from ._register import clear_cache
+    clear_cache()
+    # from .reg_types._base import BTypeBase
+    # BTypeBase.clear_cache()

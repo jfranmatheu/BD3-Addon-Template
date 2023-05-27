@@ -47,4 +47,4 @@ class EnumPropertyHelper(EnumPropertyHelperWrapper):
 
 @dataclass
 class DynamicEnumPropertyHelper(EnumPropertyHelperWrapper):
-    items : Callable
+    items : Callable = lambda self, context: (('NONE', 'NONE', ""),)

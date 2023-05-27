@@ -42,7 +42,7 @@ class BlenderTypes(Enum):
         classes_per_type[self] = filter(self.get_classes())
 
     def add_class(self, cls) -> None:
-        print(f"[{GLOBALS.ADDON_MODULE}] New {self.name} class : {cls.__name__}")
+        print(f"[{GLOBALS.ADDON_MODULE}] --> Add-Class '{cls.__name__}' of type '{self.name}', {id(cls)}")
         classes_per_type[self].append(cls)
 
     def register_classes(self) -> None:
@@ -51,7 +51,10 @@ class BlenderTypes(Enum):
             reg_factory.register()
         else:
             for cls in classes_per_type[self]:
-                print(f"[{GLOBALS.ADDON_MODULE}] + Register {self.name} class: {cls.__name__}")
+                if "bl_rna" in cls.__dict__:
+                    print(f"[{GLOBALS.ADDON_MODULE}] WARN! Tryng to register an already registered class: {cls.__name__}")
+                    continue
+                print(f"[{GLOBALS.ADDON_MODULE}] + Register {self.name} class: {cls.__name__}, {id(cls)}")
                 register_class(cls)
 
     def unregister_classes(self) -> None:
@@ -60,7 +63,7 @@ class BlenderTypes(Enum):
         else:
             for cls in classes_per_type[self]:
                 if "bl_rna" in cls.__dict__:
-                    print(f"[{GLOBALS.ADDON_MODULE}] - UnRegister {self.name} class: {cls.__name__}")
+                    print(f"[{GLOBALS.ADDON_MODULE}] - UnRegister {self.name} class: {cls.__name__}, {id(cls)}")
                     unregister_class(cls)
 
     def create_classes_factory(self):
@@ -69,6 +72,11 @@ class BlenderTypes(Enum):
 
 classes_per_type: Dict[BlenderTypes, List[Type]] = defaultdict(list)
 register_factory: Dict[BlenderTypes, RegisterFactory] = {}
+
+
+def clear_cache():
+    classes_per_type.clear()
+    register_factory.clear()
 
 
 def late_init():

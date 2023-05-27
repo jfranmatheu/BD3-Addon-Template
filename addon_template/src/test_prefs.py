@@ -1,6 +1,8 @@
-from ..ackit import BTypes, bpy_t
+from bpy.types import Context, UILayout
+
+from addon_template.ackit import Reg
 
 
-class TestPreferences(BTypes.PREFS):
-    def draw_ui(self, context: bpy_t.Context, layout: bpy_t.UILayout):
+class TestPreferences(Reg.Type.PREFS):
+    def draw_ui(self, context: Context, layout: UILayout):
         layout.label(text="Hello World! This is just some test :-)")

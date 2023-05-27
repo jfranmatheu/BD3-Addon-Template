@@ -28,6 +28,9 @@ class AutoLoad:
     def initialize(cls, works_in_background: bool = False):
         main_module = importlib.import_module(GLOBALS.ADDON_MODULE)
 
+        if hasattr(main_module, 'register'):
+            return
+
         if not works_in_background and bpy.app.background:
             main_module.register = lambda: None
             main_module.unregister = lambda: None
@@ -51,7 +54,10 @@ class AutoLoad:
             cls._cleanse_modules()
 
         modules = get_all_submodules(pathlib.Path(__file__).parent.parent)
-        registered = False
+        # registered = False
+
+        if registered:
+            return
 
         for module in modules:
             # When you need to initialize something specific in this module.

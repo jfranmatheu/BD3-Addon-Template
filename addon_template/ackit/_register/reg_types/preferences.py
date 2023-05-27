@@ -9,4 +9,4 @@ class AddonPreferences(BaseUI, DrawExtension):
 
     @classmethod
     def tag_register(cls) -> 'AddonPreferences':
-        return super().tag_register(BlAddonPreferences)
+        return super().tag_register(BlAddonPreferences, None)

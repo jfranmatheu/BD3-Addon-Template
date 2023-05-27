@@ -6,6 +6,9 @@ from ...._globals import GLOBALS
 from bpy.types import Panel as BlPanel
 
 
+ui_idname_cache = {}
+
+
 class PanelFlags(Enum):
     ''' Use as decorator over a Panel subclass. '''
     HIDE_HEADER = auto()
@@ -33,11 +36,15 @@ class Panel(BaseUI, DrawExtension):
         layout.popover(cls.bl_idname, text=label)
 
     @classmethod
+    def get_idname(cls) -> str:
+        if cls not in ui_idname_cache:
+            ui_idname_cache[cls] = GLOBALS.ADDON_MODULE.upper() + '_PT_' + cls.__name__.lower()
+        return ui_idname_cache[cls]
+
+    @classmethod
     def tag_register(deco_cls) -> 'Panel':
         return super().tag_register(
-            BlPanel,
-            bl_idname=GLOBALS.ADDON_MODULE + '_PT_' + deco_cls.__name__.lower(),
-            bl_label=deco_cls.label if hasattr(deco_cls, 'label') else deco_cls.__name__,
+            BlPanel, 'PT',
             bl_context=deco_cls.context,
             bl_category=deco_cls.tab,
             bl_space_type=deco_cls.space_type,

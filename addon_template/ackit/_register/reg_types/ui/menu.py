@@ -4,6 +4,9 @@ from ...._globals import GLOBALS
 from bpy.types import Menu as BlMenu
 
 
+ui_idname_cache = {}
+
+
 class Menu(BaseUI):
     @classmethod
     def draw_in_layout(cls, layout: UILayout, label: str = None):
@@ -11,7 +14,4 @@ class Menu(BaseUI):
 
     @classmethod
     def tag_register(deco_cls) -> 'Menu':
-        return super().tag_register(
-            BlMenu,
-            bl_idname=GLOBALS.ADDON_MODULE + '_MT_' + deco_cls.__name__.lower(),
-            bl_label=deco_cls.label if hasattr(deco_cls, 'label') else deco_cls.__name__)
+        return super().tag_register(BlMenu, 'MT')
