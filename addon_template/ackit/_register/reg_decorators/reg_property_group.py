@@ -4,7 +4,7 @@ from bpy import types as bpy_types
 from enum import Enum
 
 from .._register import BlenderTypes
-from .reg_property import PropertyRegister
+from ..reg_helpers.help_property import PropertyRegister
 
 from ...types import PropertyTypes
 
