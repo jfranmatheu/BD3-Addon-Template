@@ -26,7 +26,7 @@ def BatchPropertyRegister(data, **props: dict) -> None:
     )
 
 
-def register():
+def late_register():
     for data, props in to_register_properties.items():
         for prop_wrap in props:
             setattr(data, prop_wrap.prop_name, prop_wrap.property)

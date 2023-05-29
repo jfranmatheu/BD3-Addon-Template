@@ -2,7 +2,8 @@
 #    name = 'Addon based on ackit',
 #    description = 'Testing ackit helper module',
 #    blender = (3, 5, 1),
-#    version = (0, 1, 0)
+#    version = (0, 1, 0),
+#    location = 'Anywhere'
 #)
 
 bl_info = {

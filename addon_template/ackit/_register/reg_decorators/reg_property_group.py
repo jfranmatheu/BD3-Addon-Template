@@ -7,11 +7,12 @@ from .._register import BlenderTypes
 from ..reg_helpers.help_property import PropertyRegister
 
 from ...types import PropertyTypes
+from ..._globals import GLOBALS
 
 
 class PGRootTypes(Enum):
     WINDOW_MANAGER = bpy_types.WindowManager
-    TEMPORAL = WINDOW_MANAGER
+    # TEMPORAL = WINDOW_MANAGER
     SCENE = bpy_types.Scene
 
     OBJECT = bpy_types.Object
@@ -38,19 +39,26 @@ class PGRootTypes(Enum):
 
     def __call__(self, prop_name: str = None) -> PropertyGroup:
         def decorator(decorated_cls):
+            decorated_cls.is_root = True
+            decorated_cls.data_path = self.name.lower() + '.' + prop_name
             pg_cls = _register_property_group(decorated_cls)
-            PropertyRegister(self.value, prop_name if prop_name else 'uvflow', PropertyTypes.POINTER(pg_cls))
+            PropertyRegister(self.value, prop_name if prop_name else 'uvflow', PropertyTypes.POINTER_CUSTOM(type=pg_cls))
             return pg_cls
         return decorator
 
 
 def _register_property_group(deco_cls) -> PropertyGroup:
+    idname = GLOBALS.ADDON_MODULE.upper() + '_PG_' + deco_cls.__name__.lower()
+
     pg_cls = type(
         'UVFLOW_PG_' + deco_cls.__name__,
         (PropertyGroup, deco_cls),
         {
             '__annotations__': deco_cls.__annotations__,
-            'bl_label': deco_cls.bl_label if 'bl_label' in deco_cls else deco_cls.__name__,
+            # 'bl_label': deco_cls.bl_label if 'bl_label' in deco_cls else deco_cls.__name__,
+            'is_root': hasattr(deco_cls, 'is_root'),
+            'bl_idname': idname,
+            'original_idname': deco_cls.__name__,
         }
     )
     BlenderTypes.PropertyGroup.add_class(pg_cls)

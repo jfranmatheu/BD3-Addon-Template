@@ -93,9 +93,20 @@ def register():
         btype.register_classes()
 
 
+def late_register():
+    if GLOBALS.IN_DEVELOPMENT:
+        # Generate code automatically, but only if in development environment.
+        from .._auto_code_gen import AddonCodeGen
+        AddonCodeGen.TYPES() # Default to /types.py
+        AddonCodeGen.OPS()   # Default to /ops.py
+        AddonCodeGen.ICONS() # Default to /icons.py
+
+
 def unregister():
     for btype in BlenderTypes:
         btype.unregister_classes()
 
-    # classes_per_type.clear()
-    # register_factory.clear()
+    # Well, we can't do this in development env or BUG-s... BUG-s everywhere.
+    if GLOBALS.IN_PRODUCTION:
+        classes_per_type.clear()
+        register_factory.clear()
