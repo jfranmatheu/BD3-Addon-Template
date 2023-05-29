@@ -35,3 +35,5 @@ def unregister():
     for data, props in to_register_properties.items():
         for prop_wrap in props:
             delattr(data, prop_wrap.prop_name)
+    
+    to_register_properties.clear()

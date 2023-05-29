@@ -9,6 +9,11 @@ class NiceGroup_Collection:
 	def remove(coll, item_index: int) -> None: pass
 	def clear(coll) -> None: pass
 
+class NiceGroup:
+	name: str
+	test_pointer_object: bpy.types.Object
+	test_color: float
+
 class TestTemporal:
 	name: str
 	test_string: str
@@ -17,11 +22,6 @@ class TestTemporal:
 	@classmethod
 	def get_data(cls: 'TestTemporal', context: Context) -> 'TestTemporal':
 		return context.window_manager.test
-
-class NiceGroup:
-	name: str
-	test_pointer_object: bpy.types.Object
-	test_color: float
 
 class TestScene:
 	name: str
