@@ -36,4 +36,4 @@ def unregister():
         for prop_wrap in props:
             delattr(data, prop_wrap.prop_name)
     
-    to_register_properties.clear()
+    to_register_properties.clear() # Probably should filter if in prod env...
