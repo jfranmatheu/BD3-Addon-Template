@@ -8,6 +8,8 @@ ui_idname_cache = {}
 
 
 class Menu(BaseUI):
+    label: str
+
     @classmethod
     def draw_in_layout(cls, layout: UILayout, label: str = None):
         layout.menu(cls.bl_idname, text=label if label else cls.bl_label)
