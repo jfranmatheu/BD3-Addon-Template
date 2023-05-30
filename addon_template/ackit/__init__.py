@@ -3,9 +3,9 @@ from ._auto_load import AutoLoad # Use this in your __init__.py file to initiali
 from ._globals import GLOBALS # Common Global Variables that can be used in your addon.
 
 from bpy import types as btypes # Blender Types.
-from ._register import Reg, OpsReturn
+from ._register import Reg
 
-from .types import PropertyTypes as Property, EventValue, EventType, Mouse, RegionType, SpaceType
+from .types import PropertyTypes as Property, OpsReturn, EventValue, EventType, Mouse, RegionType, SpaceType
 
 
 '''
