@@ -34,6 +34,9 @@ class BlenderTypes(Enum):
     Panel = auto()
     PieMenu = auto()
     PropertyGroup = auto()
+    NodeTree = auto()
+    NodeSocket = auto()
+    Node = auto()
 
     def get_classes(self) -> List[Type]:
         return classes_per_type[self]

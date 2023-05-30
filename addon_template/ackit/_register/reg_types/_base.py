@@ -52,7 +52,7 @@ class BTypeBase(object):
 
 def init():
     for subcls in BTypeBase.__subclasses_recursive__():
-        if 'addon_utils' in subcls.__module__ or 'types' in subcls.__module__:
+        if 'ackit' in subcls.__module__ or 'types' in subcls.__module__:
             # SKIP: IF THE SUBCLASS IS INSIDE THE addon_utils module or inside any folder called 'types'.
             continue
         subcls.tag_register()
