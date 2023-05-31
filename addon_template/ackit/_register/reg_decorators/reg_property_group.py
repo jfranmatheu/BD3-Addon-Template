@@ -42,7 +42,7 @@ class PGRootTypes(Enum):
             decorated_cls.is_root = True
             decorated_cls.data_path = self.name.lower() + '.' + prop_name
             pg_cls = _register_property_group(decorated_cls)
-            PropertyRegister(self.value, prop_name if prop_name else 'uvflow', PropertyTypes.POINTER_CUSTOM(type=pg_cls))
+            PropertyRegister(self.value, prop_name if prop_name else GLOBALS.ADDON_MODULE, PropertyTypes.POINTER_CUSTOM(type=pg_cls))
             return pg_cls
         return decorator
 
@@ -51,7 +51,7 @@ def _register_property_group(deco_cls) -> PropertyGroup:
     idname = GLOBALS.ADDON_MODULE.upper() + '_PG_' + deco_cls.__name__.lower()
 
     pg_cls = type(
-        'UVFLOW_PG_' + deco_cls.__name__,
+        idname,
         (PropertyGroup, deco_cls),
         {
             '__annotations__': deco_cls.__annotations__,

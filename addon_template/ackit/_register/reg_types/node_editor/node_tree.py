@@ -35,7 +35,7 @@ class NodeTree(BTypeBase):
 
     @classmethod
     def tag_register(deco_cls) -> 'NodeTree':
-        node_tree_idname = f'{GLOBALS.ADDON_MODULE.upper()}_NodeCategory_{deco_cls.idname}'
+        node_tree_idname = f'{GLOBALS.ADDON_MODULE.upper()}_NodeTree_{deco_cls.idname}'
 
         node_tree = super().tag_register(
             bpy_types.NodeTree, None,
@@ -46,7 +46,7 @@ class NodeTree(BTypeBase):
         )
 
         from .node_cats import new_node_category
-        new_node_category(node_tree_idname)
+        new_node_category(node_tree)
 
         node_tree_classes[node_tree_idname] = node_tree
         return node_tree
